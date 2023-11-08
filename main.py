@@ -4,8 +4,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 load_dotenv()
 
-intents = discord.Intents().all()
-client = commands.Bot(intents = intents)
+client = commands.Bot()
 
 for filename in os.listdir("./cogs"):
   if filename.endswith(".py"):
