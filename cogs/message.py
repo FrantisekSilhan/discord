@@ -5,8 +5,8 @@ from utils import prettify_member_name
 class MessageCog(commands.Cog):
   def __init__(self, client):
     self.client = client
-    self.log_channel_id = 1171739092552257587
-    self.allowed_guild_id = 1171709881997332511
+    self.log_channel_id = 1261746740206374977
+    self.allowed_guild_id = 1261746739623231499
 
   @commands.Cog.listener()
   async def on_member_join(self, member):
