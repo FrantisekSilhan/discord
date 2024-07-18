@@ -12,7 +12,7 @@ class MortisCog(commands.Cog):
 
   @commands.slash_command(name="link", description="Link your Discord account to your Mortis account")
   async def link(self, ctx, code: str):
-    user = ctx.author.id
+    user = str(ctx.author.id)
     response = requests.post("https://mortis.icu/discord/link", json={"code": code, "discordId": user}, headers={"authorization": os.environ["API_KEY"]})
     if response.status_code == 200:
       await ctx.respond("Your Discord account has been linked to your Mortis account.", ephemeral=True)
@@ -23,7 +23,7 @@ class MortisCog(commands.Cog):
 
   @commands.slash_command(name="unlink", description="Unlink your Discord account from your Mortis account")
   async def unlink(self, ctx):
-    user = ctx.author.id
+    user = str(ctx.author.id)
     response = requests.post("https://mortis.icu/discord/unlink", json={"discordId": user}, headers={"authorization": os.environ["API_KEY"]})
     if response.status_code == 200:
       await ctx.respond("Your Discord account has been unlinked from your Mortis account.", ephemeral=True)
