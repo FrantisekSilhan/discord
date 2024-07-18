@@ -9,12 +9,17 @@ class MortisCog(commands.Cog):
     self.client = client
     self.log_channel_id = 1261746740206374977
     self.allowed_guild_id = 1261746739623231499
+    self.verified_role_id = 1263558982937874462
 
   @commands.slash_command(name="link", description="Link your Discord account to your Mortis account")
   async def link(self, ctx, code: str):
     user = str(ctx.author.id)
     response = requests.post("https://mortis.icu/discord/link", json={"code": code, "discordId": user}, headers={"authorization": os.environ["API_KEY"]})
     if response.status_code == 200:
+      guild = self.client.get_guild(self.allowed_guild_id)
+      member = guild.get_member(ctx.author.id)
+      role = guild.get_role(self.verified_role_id)
+      await member.add_roles(role)
       await ctx.respond("Your Discord account has been linked to your Mortis account.", ephemeral=True)
     elif response.status_code == 404:
       await ctx.respond("The code you entered is invalid.", ephemeral=True)
@@ -26,6 +31,10 @@ class MortisCog(commands.Cog):
     user = str(ctx.author.id)
     response = requests.post("https://mortis.icu/discord/unlink", json={"discordId": user}, headers={"authorization": os.environ["API_KEY"]})
     if response.status_code == 200:
+      guild = self.client.get_guild(self.allowed_guild_id)
+      member = guild.get_member(ctx.author.id)
+      role = guild.get_role(self.verified_role_id)
+      await member.remove_roles(role)
       await ctx.respond("Your Discord account has been unlinked from your Mortis account.", ephemeral=True)
     else:
       await ctx.respond("An error occurred while unlinking your Discord account from your Mortis account.", ephemeral=True)
